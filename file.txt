@@ -1,0 +1,34 @@
+import nltk
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet
+
+# Download necessary NLTK data (if not already downloaded)
+# nltk.download('wordnet')
+# nltk.download('averaged_perceptron_tagger') # For POS tagging
+
+lemmatizer = WordNetLemmatizer()
+
+def get_wordnet_pos(tag):
+    """Map NLTK POS tags to WordNet POS tags."""
+    if tag.startswith('J'):
+        return wordnet.ADJ
+    elif tag.startswith('V'):
+        return wordnet.VERB
+    elif tag.startswith('N'):
+        return wordnet.NOUN
+    elif tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return wordnet.NOUN # Default to noun if POS not found
+
+words_with_pos = [("running", "VBG"), ("better", "RBR"), ("cats", "NNS")] # Example with known POS
+
+print("WordNet Lemmatizer (with POS tagging):")
+for word, pos_tag in words_with_pos:
+    lemmatized_word = lemmatizer.lemmatize(word, get_wordnet_pos(pos_tag))
+    print(f"{word} ({pos_tag}) -> {lemmatized_word}")
+
+# Lemmatization without explicit POS (defaults to noun)
+print("\nWordNet Lemmatizer (default to noun):")
+print(f"running -> {lemmatizer.lemmatize('running')}")
+print(f"ran -> {lemmatizer.lemmatize('ran')}")
